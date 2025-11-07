@@ -1,0 +1,7 @@
+streamlit
+yfinance
+pandas
+numpy
+xgboost
+scikit-learn
+backtrader

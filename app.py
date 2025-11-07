@@ -271,7 +271,21 @@ with tab1:
         if all_results:
             final_df = pd.DataFrame(all_results)
             final_df.sort_values(by='Profit_Loss', ascending=False, inplace=True)
-            final_df.set_index('Ticker', inplace=True)
+            final_df = final_df[~final_df.index.duplicated(keep='first')]
+
+# Then style + display
+            st.dataframe(
+                final_df.style.format({
+                    'Starting_Cash': '₹{:,.2f}',
+                    'Final_Value': '₹{:,.2f}',
+                    'Profit_Loss': '₹{:,.2f}',
+                    'CAGR_%': '{:.2f}%',
+                    'Sharpe_Ratio': '{:.3f}',
+                    'Max_Drawdown_%': '{:.2f}%',
+                    'Accuracy_XGB': '{:.1%}'
+                }).highlight_max(subset=['Profit_Loss', 'Sharpe_Ratio'], color='#004d00')
+                    .highlight_min(subset=['Profit_Loss', 'Sharpe_Ratio'], color='#660000')
+            )
             
             # Show the best one
             best_stock = final_df.iloc[0]
